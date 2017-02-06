@@ -3,6 +3,7 @@
 # https://github.com/calmh/smartos-platform-upgrade
 # Copyright (c) 2012-2016 Jakob Borg & Contributors
 # Distributed under the MIT License
+set -e
 
 # us-east.manta.joyent.com currently uses a wildcard certificate based on the
 # Thawte Primary Root CA.
@@ -127,7 +128,8 @@ else
         echo -n " using $usb"
 fi
 
-umount "$usb" 2>/dev/null
+# This command may fail if the USB partition is not mounted.
+umount "$usb" 2>/dev/null || true
 mkdir usb
 if ! mount -F pcfs -o foldcase "$usb" "$tmp/usb" ; then
         echo ", mount failed"
